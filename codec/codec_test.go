@@ -10,6 +10,10 @@ import (
 
 type leftCommandPacket int
 
+func (leftCommandPacket leftCommandPacket) Index() Index {
+	return IndexBoxHost
+}
+
 func (l leftCommandPacket) CMD() byte {
 	return 0x50
 }
@@ -19,6 +23,10 @@ func (l leftCommandPacket) Data() []byte {
 }
 
 type downCommandPacket int
+
+func (d downCommandPacket) Index() Index {
+	return IndexBoxHost
+}
 
 func (d downCommandPacket) CMD() byte {
 	return 0x50
@@ -48,7 +56,7 @@ func TestEncode(t *testing.T) {
 
 	for _, tc := range testcases {
 		t.Run(tc.name, func(t *testing.T) {
-			rawPacket, err := Encode(IndexBoxHost, tc.command)
+			rawPacket, err := Encode(tc.command)
 			assert.NoError(t, err)
 			assert.Equal(t, tc.want, rawPacket)
 		})
